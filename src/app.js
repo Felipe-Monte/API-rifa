@@ -2,6 +2,7 @@
 import {
   createTable,
   insertPerson,
+  showAllPersons,
   updatePerson,
 } from "./controller.js/person.js";
 import express from "express";
@@ -13,6 +14,18 @@ createTable();
 app.get("/", (req, res) => {
   res.send("ok");
 });
+
+app.get("/persons", async (req, res) => {
+  try{
+    const persons = await showAllPersons()
+    res.json(persons)
+  }catch(error){
+    res.status(500).json({
+      statusCode: 500,
+      message: error
+    })
+  }
+})
 
 app.post("/cadastro", (req, res) => {
   const { name, number } = req.body;

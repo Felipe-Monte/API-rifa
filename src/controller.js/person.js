@@ -15,6 +15,11 @@ export async function createTable() {
   });
 }
 
+export async function showAllPersons() {
+  const db = await openDb();
+  return db.all("SELECT * FROM Person");
+}
+
 export async function insertPerson(person) {
   openDb().then((db) => {
     db.run("INSERT INTO Person (name, number, is_valid) VALUES (?,?,?)", [
