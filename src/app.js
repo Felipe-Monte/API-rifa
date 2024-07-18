@@ -3,6 +3,7 @@ import {
   createTable,
   insertPerson,
   showAllPersons,
+  showSpecificPerson,
   updatePerson,
 } from "./controller.js/person.js";
 import express from "express";
@@ -16,20 +17,33 @@ app.get("/", (req, res) => {
 });
 
 app.get("/persons", async (req, res) => {
-  try{
-    const persons = await showAllPersons()
-    res.json(persons)
-  }catch(error){
+  try {
+    const persons = await showAllPersons();
+    res.json(persons);
+  } catch (error) {
     res.status(500).json({
       statusCode: 500,
-      message: error
-    })
+      message: error,
+    });
   }
-})
+});
+
+app.get("/person", async (req, res) => {
+  const { id } = req.body;
+  const person = await showSpecificPerson(id);
+  if (!id || !person) {
+    res.json({
+      statusCode: 400,
+      message: "Informe ID",
+    });
+  } else {
+    res.json(person);
+  }
+});
 
 app.post("/cadastro", (req, res) => {
   const { name, number } = req.body;
-  if (!name || !number ) {
+  if (!name || !number) {
     res.json({
       statusCode: 400,
       message: "Compre ou reserve um numero, informe nome e telefone",

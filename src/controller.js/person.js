@@ -20,8 +20,15 @@ export async function showAllPersons() {
   return db.all("SELECT * FROM Person");
 }
 
+export async function showSpecificPerson(id){
+  return openDb().then((db) => {
+    return db.get("SELECT * FROM Person WHERE id=?", [id])
+    .then(res => res)
+  })
+}
+
 export async function insertPerson(person) {
-  openDb().then((db) => {
+  return openDb().then((db) => {
     db.run("INSERT INTO Person (name, number, is_valid) VALUES (?,?,?)", [
       person.name,
       person.number,
@@ -31,7 +38,7 @@ export async function insertPerson(person) {
 }
 
 export async function updatePerson(person) {
-  openDb().then((db) => {
+  return openDb().then((db) => {
     db.run("UPDATE Person SET name=?, number=?, is_valid=? WHERE id=?", [
       person.name,
       person.number,
